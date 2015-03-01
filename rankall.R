@@ -64,17 +64,18 @@ checkRankIdx <- function(num, totalCandidates)
 
 
 
-
+## Ranking hospitals in all states
 rankall <- function(outcome, num = "best")
 {
+	## read in data as "character" type from outcome-of-care-measures.csv
 	filename <- "outcome-of-care-measures.csv"
 	myData <- read.csv(filename, colClasses = "character")
 	
-
+	## get all the states and sort them in alphabetical order
 	myState <- unique(myData$State)
 	myState <- sort(myState)
 	
-	
+	## Check that outcome (user input) is valid
 	targetMortalityName <- checkTarget(outcome)
 	if (targetMortalityName== "")
 	{
@@ -84,17 +85,16 @@ rankall <- function(outcome, num = "best")
 
 	myData[,targetMortalityName] <- as.numeric(myData[, targetMortalityName], na.rm=TRUE)
 
-	## go through each state in myState vector
-	
 
-	##resultDF <- matrix(ncol=2)
+	resultDF <- data.frame(hospital = character(), state=character())
 	##colnames(resultDF) <- c("Hospital", "State")
-	resultDF <- matrix(nrow=0,ncol=2)
-	colnames(resultDF) <- c("Hospital", "State")
+	##resultDF <- matrix(nrow=0,ncol=2)
+	##colnames(resultDF) <- c("Hospital", "State")
 
 
 	print(resultDF)
 
+	## go through each state in myState vector
 	for (i in seq_along(myState))
 	{
 		## stateName <- myState[i]
@@ -110,7 +110,7 @@ rankall <- function(outcome, num = "best")
 
 		totalCandidates <- length(outData$Hospital.Name)
 	
-
+		## num validity check
 		idx <- checkRankIdx(num, totalCandidates)	
 		if (idx < 0)
 		{
@@ -118,7 +118,7 @@ rankall <- function(outcome, num = "best")
 		}
 		else if (idx == 0)
 		{
-			candidate <- "NA"
+			candidate <- NA_character_ ##special character: <NA>
 		}
 		else 
 		{
@@ -126,14 +126,12 @@ rankall <- function(outcome, num = "best")
 		}
 
 			
-
-		resultDF <- rbind(resultDF, c(candidate, myState[i]))
-		
-
-		
+		## append the current "hospital" and "State" into resultDF
+		##resultDF <- rbind(resultDF, c(candidate, myState[i]))
+		resultDF <- rbind(resultDF, data.frame(hospital=candidate, state=myState[i]))
 
 	}
-
+	rownames(resultDF) <- resultDF$state
 	resultDF
 	
 	
