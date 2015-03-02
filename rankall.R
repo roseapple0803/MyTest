@@ -149,14 +149,18 @@ rankall <- function(outcome, num = "best")
 	myData[,targetMortalityName] <- as.numeric(myData[, targetMortalityName], na.rm=TRUE)
 
 
+	## resultDF is a data frame with two columns: hospital(character type) and state(character type)
 	resultDF <- data.frame(hospital = character(), state=character())
+	resultDF <- data.frame() ## it also works!
+	
+
 	
 	##colnames(resultDF) <- c("Hospital", "State")
 	##resultDF <- matrix(nrow=0,ncol=2)
 	##colnames(resultDF) <- c("Hospital", "State")
 
 
-	print(resultDF)
+	##print(resultDF)
 
 	## go through each state in myState vector
 	for (i in seq_along(myState))
