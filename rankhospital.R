@@ -88,14 +88,16 @@ rankhospital <- function(state, outcome, num = "best")
 
 	## total number of hospitals
 	totalCandidates <- length(outData[ ,"Hospital.Name"])
+	
+	##print(totalCandidates)
 
 	## "num" validity check
 	if (is.numeric(num))
 	{
 		if (num > totalCandidates)
 		{
-			print("num is larger than the number of hospitals in that state")
-			stop("NA")		
+			## num is larger than the number of hospitals in that state
+			rankIdx <- 0
 		}
 		else
 		{
@@ -120,9 +122,16 @@ rankhospital <- function(state, outcome, num = "best")
 			rankIdx <- totalCandidates
 		}
 	}
-
-	## find hospital name with the given rank
-	outData[rankIdx, "Hospital.Name"]
+	
+	if (rankIdx == 0)
+	{
+		NA
+	}
+	else
+	{
+		## find hospital name with the given rank
+		outData[rankIdx, "Hospital.Name"]
+	}
 
 }
 
